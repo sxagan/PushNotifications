@@ -38,6 +38,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onMessage(Context context, Intent intent) {
+        Log.d("PushNotification", "Received message: ");
         boolean isAppInForeground = NotificationService.getInstance(context).isForeground();
 
         Bundle extras = intent.getExtras();
