@@ -55,8 +55,6 @@ public class GCMIntentService extends GCMBaseIntentService {
                 }
             }
 
-
-
             NotificationService.getInstance(context).onMessage(extras);
         }
     }
@@ -70,7 +68,8 @@ public class GCMIntentService extends GCMBaseIntentService {
             Log.d(TAG, "forceMainActivityReload() - packageName: " + packageName);
 
             Intent launchIntent = pm.getLaunchIntentForPackage(packageName);
-            startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));                
+            //startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+            startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));                
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }
