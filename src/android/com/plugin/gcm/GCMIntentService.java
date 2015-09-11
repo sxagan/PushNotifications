@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import android.content.pm.PackageManager;
+
 @SuppressLint("NewApi")
 public class GCMIntentService extends GCMBaseIntentService {
 
@@ -48,11 +50,25 @@ public class GCMIntentService extends GCMBaseIntentService {
             if (!isAppInForeground) {
                 if (extras.getString(MESSAGE) != null && extras.getString(MESSAGE).length() != 0) {
                     createNotification(context, extras);
+                    forceMainActivityReload(context);
                 }
             }
 
+
+
             NotificationService.getInstance(context).onMessage(extras);
         }
+    }
+
+    private void forceMainActivityReload(Context context) {
+        PackageManager pm = context.getPackageManager();
+        //String packageName = getApplicationContext().getPackageName();
+        String packageName = context.getPackageName();
+
+        Log.d(TAG, "forceMainActivityReload() - packageName: " + packageName);
+
+        Intent launchIntent = pm.getLaunchIntentForPackage(packageName);
+        startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
     }
 
     public void createNotification(Context context, Bundle extras) {
