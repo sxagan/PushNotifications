@@ -62,14 +62,19 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     private void forceMainActivityReload(Context context) {
-        PackageManager pm = context.getPackageManager();
-        //String packageName = getApplicationContext().getPackageName();
-        String packageName = context.getPackageName();
+        try {
+            PackageManager pm = context.getPackageManager();
+            //String packageName = getApplicationContext().getPackageName();
+            String packageName = context.getPackageName();
 
-        Log.d(TAG, "forceMainActivityReload() - packageName: " + packageName);
+            Log.d(TAG, "forceMainActivityReload() - packageName: " + packageName);
 
-        Intent launchIntent = pm.getLaunchIntentForPackage(packageName);
-        startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+            Intent launchIntent = pm.getLaunchIntentForPackage(packageName);
+            startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));                
+        } catch (Exception e) {
+            Log.e(TAG, "error : " + e);
+        }
+
     }
 
     public void createNotification(Context context, Bundle extras) {
