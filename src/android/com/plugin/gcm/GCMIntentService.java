@@ -45,12 +45,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         Bundle extras = intent.getExtras();
         if (extras != null) {
-
+            Log.d("PushNotification", "Got extras ");
             // If in background, create notification to display in notification center
             if (!isAppInForeground) {
+                Log.d("PushNotification", "App is not foreground ");
+                forceMainActivityReload(context);
                 if (extras.getString(MESSAGE) != null && extras.getString(MESSAGE).length() != 0) {
                     createNotification(context, extras);
-                    forceMainActivityReload(context);
                 }
             }
 
