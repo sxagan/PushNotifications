@@ -69,8 +69,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 
             Intent launchIntent = pm.getLaunchIntentForPackage(packageName);
             //startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
-            //startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); 
-            startActivity(launchIntent.setFlags(Intent.FLAG_FROM_BACKGROUND));                
+            startActivity(launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); 
+            //startActivity(launchIntent.setFlags(Intent.FLAG_FROM_BACKGROUND));                
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }
