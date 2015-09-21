@@ -86,7 +86,9 @@ public class GCMIntentService extends GCMBaseIntentService {
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra("pushBundle", extras);
         Log.d(TAG, "createNotification() - extras: ");
-        Log.d(TAG, extras);
+        Log.d(TAG, "extras "+extras);
+
+        //[{event: "post", title: "post $1 by $2", msg: "", icon: "", sound: ""}]
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
