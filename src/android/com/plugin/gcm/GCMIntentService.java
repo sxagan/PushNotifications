@@ -49,7 +49,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             // If in background, create notification to display in notification center
             if (!isAppInForeground) {
                 Log.d("PushNotification", "App is not foreground ");
-                forceMainActivityReload(context);
+                //forceMainActivityReload(context);
                 if (extras.getString(MESSAGE) != null && extras.getString(MESSAGE).length() != 0) {
                     createNotification(context, extras);
                 }
@@ -85,6 +85,8 @@ public class GCMIntentService extends GCMBaseIntentService {
         Intent notificationIntent = new Intent(this, PushHandlerActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra("pushBundle", extras);
+        Log.d(TAG, "createNotification() - extras: ");
+        Log.d(TAG, extras);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
