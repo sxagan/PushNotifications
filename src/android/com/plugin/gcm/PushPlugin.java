@@ -11,6 +11,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import android.os.Environment;
+
 /**
 * Push Notifications Plugin
 */
@@ -21,6 +25,8 @@ public class PushPlugin extends CordovaPlugin {
   public static final String REGISTER = "register";
 
   public static final String UNREGISTER = "unregister";
+
+  public static final String LN = "ln";
 
   public static final String EXIT = "exit";
 
@@ -87,6 +93,40 @@ public class PushPlugin extends CordovaPlugin {
     }
   }
 
+  private boolean handleLN(JSONArray data, CallbackContext callbackContext) {
+    Context context = getApplicationContext();
+    try {
+      if(data.length() > 0){
+        JSONArray ja = data.getJSONArray(0);
+        writeJsonTplFile(context,ja);
+      }
+      return true;
+
+    }
+    catch (Exception e) {
+      Log.e(TAG, "execute: Got JSON Exception " + e.getMessage());
+      
+      return false;
+    }
+  }
+
+  private void writeJsonTplFile(Context context, JSONArray jarray){
+        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
+        FileWriter file = new FileWriter(PATH);
+        try {
+            file.write(jarray.toJSONString());
+            Log.d(TAG, "Successfully Copied JSON Object to File...");
+            Log.d(TAG, "\nJSON Object: " + obj);
+ 
+        } catch (IOException e) {
+            //e.printStackTrace();
+            Log.e(TAG, "Error writing to file:" + e );
+        } finally {
+            file.flush();
+            file.close();
+        }
+    }
+
   @Override
   public boolean execute(String action, JSONArray data, CallbackContext callbackContext) {
 
@@ -97,6 +137,11 @@ public class PushPlugin extends CordovaPlugin {
     if (REGISTER.equals(action)) {
 
       result = handleRegister(data, callbackContext);
+
+    }
+    else if (LN.equals(action)) {
+
+      result = handleLN(data, callbackContext);
 
     }
     else if (ON_MESSAGE_FOREGROUND.equals(action)) {

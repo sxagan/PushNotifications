@@ -97,7 +97,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             String exFilesPath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             Log.d(TAG, "getExternalFilesDir(): " + exFilesPath);
 
-            String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/msgtpl.json";
+            String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
             Object object = parser.parse(new FileReader(PATH));             
             jsonArray = (JSONArray) object;
             //Use JSONArray instead of JSONObject if json file contains array of JSONs
@@ -111,8 +111,8 @@ public class GCMIntentService extends GCMBaseIntentService {
         return jsonArray;
     }
 
-    private JSONArray writeJsonTplFile(Context context, JSONArray jarray){
-        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/msgtpl.json";
+    private void writeJsonTplFile(Context context, JSONArray jarray){
+        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
         FileWriter file = new FileWriter(PATH);
         try {
             file.write(jarray.toJSONString());
