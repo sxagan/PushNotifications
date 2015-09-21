@@ -11,6 +11,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.os.Environment;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONParser;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import android.content.pm.PackageManager;
 
@@ -50,6 +58,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             if (!isAppInForeground) {
                 Log.d("PushNotification", "App is not foreground ");
                 //forceMainActivityReload(context);
+                
                 if (extras.getString(MESSAGE) != null && extras.getString(MESSAGE).length() != 0) {
                     createNotification(context, extras);
                 }
@@ -77,6 +86,48 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     }
 
+    private JSONArray loadJsonTplFile(Context context){
+        JSONArray jsonArray = new JSONArray();
+        JSONParser parser  = new JSONParser();
+        try {
+            String dataPath = Environment.getDataDirectory();
+            Log.d(TAG, "getDataDirectory(): " + dataPath);
+            String exStorePath = Environment.getExternalStorageDirectory();
+            Log.d(TAG, "getExternalStorageDirectory(): " + exStorePath);
+            String exFilesPath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            Log.d(TAG, "getExternalFilesDir(): " + exFilesPath);
+
+            String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/msgtpl.json";
+            Object object = parser.parse(new FileReader(PATH));             
+            jsonArray = (JSONArray) object;
+            //Use JSONArray instead of JSONObject if json file contains array of JSONs
+            //
+            // Do anything with jsonObject  
+            //
+        } catch(IOException e) {
+            // TODO: handle exception
+            Log.e(TAG, "Error accessing file (File Not Found):" + e );
+        }
+        return jsonArray;
+    }
+
+    private JSONArray writeJsonTplFile(Context context, JSONArray jarray){
+        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/msgtpl.json";
+        FileWriter file = new FileWriter(PATH);
+        try {
+            file.write(jarray.toJSONString());
+            Log.d(TAG, "Successfully Copied JSON Object to File...");
+            Log.d(TAG, "\nJSON Object: " + obj);
+ 
+        } catch (IOException e) {
+            //e.printStackTrace();
+            Log.e(TAG, "Error writing to file:" + e );
+        } finally {
+            file.flush();
+            file.close();
+        }
+    }
+
     public void createNotification(Context context, Bundle extras) {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(
                 Context.NOTIFICATION_SERVICE);
@@ -88,7 +139,18 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.d(TAG, "createNotification() - extras: ");
         Log.d(TAG, "extras "+extras);
 
-        //[{event: "post", title: "post $1 by $2", msg: "", icon: "", sound: ""}]
+        //[{event: "post", title: "post %1 by %2", msg: "", icon: "", sound: ""}]
+        /*[
+            {event: "posts", title: "postTitle", msg: "%by% %fromstr%", icon: "", sound: ""},
+            {event: "replies", title: "postTitle", msg: "%by% : %replyMsg%", icon: "", sound: ""},
+            {event: "groupJoinRequest", title: "%by% sent a join request", msg: "%groupName%", icon: "", sound: ""},
+            {event: "groupInviteRequest", title: "You've got an invite from %by%", msg: "%groupName%", icon: "", sound: ""},
+            {event: "channelInviteRequest", title: "You've got an invite from %by%", msg: "%channelName% in %groupName%", icon: "", sound: ""},
+            {event: "groupRequestResponse", title: "%from%'s request to join %approved% by %by%", msg: "%groupName%", icon: "", sound: ""},
+            {event: "channelRequestResponse", title: "%from% has %accepted% to join", msg: "%channelName% in %groupName%", icon: "", sound: ""}
+        ]*/
+
+        JSONArray art = loadJsonTplFile(context);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
