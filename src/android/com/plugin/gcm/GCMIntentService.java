@@ -114,6 +114,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     private JSONArray loadJsonTplFile(Context context){
         JSONArray jsonArray = new JSONArray();
+        
         try {
             String dataPath = Environment.getDataDirectory().getAbsolutePath();
             Log.d(TAG, "getDataDirectory(): " + dataPath);
