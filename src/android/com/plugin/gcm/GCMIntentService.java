@@ -14,11 +14,12 @@ import android.util.Log;
 import android.os.Environment;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONParser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File
+import java.lang.Object
 
 import android.content.pm.PackageManager;
 
@@ -86,24 +87,26 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     }
 
+    static String readFile(String path, Charset encoding)  throws IOException 
+    {
+      byte[] encoded = Files.readAllBytes(Paths.get(path));
+      return new String(encoded, encoding);
+    }
+
     private JSONArray loadJsonTplFile(Context context){
         JSONArray jsonArray = new JSONArray();
-        JSONParser parser  = new JSONParser();
         try {
-            String dataPath = Environment.getDataDirectory();
+            String dataPath = Environment.getDataDirectory().getAbsolutePath();
             Log.d(TAG, "getDataDirectory(): " + dataPath);
-            String exStorePath = Environment.getExternalStorageDirectory();
+            String exStorePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             Log.d(TAG, "getExternalStorageDirectory(): " + exStorePath);
-            String exFilesPath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            String exFilesPath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
             Log.d(TAG, "getExternalFilesDir(): " + exFilesPath);
 
             String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
-            Object object = parser.parse(new FileReader(PATH));             
-            jsonArray = (JSONArray) object;
-            //Use JSONArray instead of JSONObject if json file contains array of JSONs
-            //
-            // Do anything with jsonObject  
-            //
+            String arrayStr = readFile(PATH,StandardCharsets.UTF_8);      
+            jsonArray = new JSONArray(arrayStr);
+            
         } catch(IOException e) {
             // TODO: handle exception
             Log.e(TAG, "Error accessing file (File Not Found):" + e );
@@ -112,10 +115,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     private void writeJsonTplFile(Context context, JSONArray jarray){
-        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
+        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/ln.json";
         FileWriter file = new FileWriter(PATH);
         try {
-            file.write(jarray.toJSONString());
+            file.write(jarray.toString());
             Log.d(TAG, "Successfully Copied JSON Object to File...");
             Log.d(TAG, "\nJSON Object: " + obj);
  

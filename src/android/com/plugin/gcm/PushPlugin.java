@@ -111,10 +111,10 @@ public class PushPlugin extends CordovaPlugin {
   }
 
   private void writeJsonTplFile(Context context, JSONArray jarray){
-        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
+        String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/ln.json";
         FileWriter file = new FileWriter(PATH);
         try {
-            file.write(jarray.toJSONString());
+            file.write(jarray.toString());
             Log.d(TAG, "Successfully Copied JSON Object to File...");
             Log.d(TAG, "\nJSON Object: " + obj);
  
@@ -125,7 +125,7 @@ public class PushPlugin extends CordovaPlugin {
             file.flush();
             file.close();
         }
-    }
+  }
 
   @Override
   public boolean execute(String action, JSONArray data, CallbackContext callbackContext) {
