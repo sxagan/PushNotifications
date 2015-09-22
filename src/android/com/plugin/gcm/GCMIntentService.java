@@ -18,8 +18,9 @@ import org.json.JSONObject;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.File
-import java.lang.Object
+import java.io.File;
+import java.lang.Object;
+omport java.io.BufferedReader;
 
 import android.content.pm.PackageManager;
 
