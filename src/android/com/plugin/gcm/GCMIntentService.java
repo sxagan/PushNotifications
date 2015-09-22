@@ -87,10 +87,28 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     }
 
-    static String readFile(String path, Charset encoding)  throws IOException 
+    /*static String readFile(String path, Charset encoding)  throws IOException 
     {
       byte[] encoded = Files.readAllBytes(Paths.get(path));
       return new String(encoded, encoding);
+    }*/
+
+    static String readFile(String path){
+        StringBuilder text = new StringBuilder();
+        try {
+             File file = new File(path);
+
+             BufferedReader br = new BufferedReader(new FileReader(file));  
+             String line;   
+             while ((line = br.readLine()) != null) {
+                        text.append(line);
+                        text.append('\n');
+             }
+             br.close() ;
+         }catch (IOException e) {
+            e.printStackTrace();           
+         }
+         return text.toString();
     }
 
     private JSONArray loadJsonTplFile(Context context){
