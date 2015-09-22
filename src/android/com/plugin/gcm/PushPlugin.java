@@ -116,7 +116,7 @@ public class PushPlugin extends CordovaPlugin {
         try {
             file.write(jarray.toString());
             Log.d(TAG, "Successfully Copied JSON Object to File...");
-            Log.d(TAG, "\nJSON Object: " + obj);
+            Log.d(TAG, "\nJSON Object: " + jarray.toString());
  
         } catch (IOException e) {
             //e.printStackTrace();

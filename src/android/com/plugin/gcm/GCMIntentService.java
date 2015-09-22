@@ -123,7 +123,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             Log.d(TAG, "getExternalFilesDir(): " + exFilesPath);
 
             String PATH = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/ln.json";
-            String arrayStr = readFile(PATH,StandardCharsets.UTF_8);      
+            String arrayStr = readFile(PATH);      
             jsonArray = new JSONArray(arrayStr);
             
         } catch(IOException e) {
@@ -139,7 +139,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         try {
             file.write(jarray.toString());
             Log.d(TAG, "Successfully Copied JSON Object to File...");
-            Log.d(TAG, "\nJSON Object: " + obj);
+            Log.d(TAG, "\nJSON Object: " + jarray.toString());
  
         } catch (IOException e) {
             //e.printStackTrace();
