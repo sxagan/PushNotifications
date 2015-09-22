@@ -126,7 +126,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             String arrayStr = readFile(PATH);      
             jsonArray = new JSONArray(arrayStr);
             
-        } catch(IOException e) {
+        } catch(Exception e) {
             // TODO: handle exception
             Log.e(TAG, "Error accessing file (File Not Found):" + e );
         }
@@ -141,7 +141,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             Log.d(TAG, "Successfully Copied JSON Object to File...");
             Log.d(TAG, "\nJSON Object: " + jarray.toString());
  
-        } catch (IOException e) {
+        } catch (Exception e) {
             //e.printStackTrace();
             Log.e(TAG, "Error writing to file:" + e );
         } finally {
