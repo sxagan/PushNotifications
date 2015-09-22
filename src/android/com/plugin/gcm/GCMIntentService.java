@@ -20,7 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.lang.Object;
-omport java.io.BufferedReader;
+import java.io.BufferedReader;
 
 import android.content.pm.PackageManager;
 
