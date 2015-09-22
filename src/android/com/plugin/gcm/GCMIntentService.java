@@ -141,14 +141,12 @@ public class GCMIntentService extends GCMBaseIntentService {
             file.write(jarray.toString());
             Log.d(TAG, "Successfully Copied JSON Object to File...");
             Log.d(TAG, "\nJSON Object: " + jarray.toString());
- 
+            file.flush();
+            file.close(); 
         } catch (IOException e) {
             //e.printStackTrace();
             Log.e(TAG, "Error writing to file:" + e );
-        } finally {
-            file.flush();
-            file.close();
-        }
+        } 
     }
 
     public void createNotification(Context context, Bundle extras) {
